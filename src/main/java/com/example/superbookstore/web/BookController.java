@@ -58,10 +58,18 @@ public class BookController {
     public String showUpdateForm(@PathVariable("id") long id, Model model) {
         Book foo = bookRepository.findById(id).orElse(null);
         model.addAttribute("book", foo);
-       /* Optional<Book> foo = repository.findById(id);
-        model.addAttribute("book", repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id)));*/
 
         return "editbook";
+    }
+    // RESTful service to get all books
+    @RequestMapping(value="/books")
+    public @ResponseBody List<Book> bookListRest() {
+        return (List<Book>) bookRepository.findAll();
+    }
+
+    // RESTful service to get book by id
+    @RequestMapping(value="/book/{id}", method = RequestMethod.GET)
+    public @ResponseBody Book findBookRest(@PathVariable("id") Long bookId) {
+        return bookRepository.findById(bookId).orElse(null);
     }
 }
